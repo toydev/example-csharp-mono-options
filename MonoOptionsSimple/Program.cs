@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 using Mono.Options;
@@ -37,16 +38,24 @@ namespace MonoOptionsSimple
             }
             catch (OptionException e)
             {
-                Console.Write("{0}: ", Assembly.GetExecutingAssembly().FullName);
+                Console.Write("{0}: ", ApplicationName);
                 Console.WriteLine(e.Message);
-                Console.WriteLine("Try `{0} --help' for more information.", Assembly.GetExecutingAssembly().FullName);
+                Console.WriteLine("Try `{0} --help' for more information.", ApplicationName);
                 return;
+            }
+        }
+
+        static string ApplicationName
+        {
+            get
+            {
+                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
             }
         }
 
         static void Usage(OptionSet options)
         {
-            Console.WriteLine("Usage: {0} [OPTIONS]+", Assembly.GetExecutingAssembly().FullName);
+            Console.WriteLine("Usage: {0} [OPTIONS]+", ApplicationName);
             Console.WriteLine("Application Description Here.");
             Console.WriteLine();
 
